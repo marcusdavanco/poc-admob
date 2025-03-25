@@ -4,6 +4,7 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Text } from "react-native";
 
 export default function HomeScreen() {
     return (
@@ -44,6 +45,7 @@ export default function HomeScreen() {
                     Tap the Explore tab to learn more about what's included in
                     this starter app.
                 </ThemedText>
+                <Text className="bg-red-400 text-white">THIS IS MOTHERFUCKING SPARTA!!!</Text>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
                 <ThemedText type="subtitle">
