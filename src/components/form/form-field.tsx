@@ -1,31 +1,54 @@
-import { View, Text, TextInput, Pressable } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import { useCallback, useState } from "react";
+import {
+    Controller,
+    type FieldValues,
+    type UseControllerProps,
+} from "react-hook-form";
+import { Pressable, Text, TextInput, View } from "react-native";
 
-enum InputType {
-    TEXT = "text",
-    PASSWORD = "password",
-}
-
-export type InputProps = {
+export type InputProps<T extends FieldValues> = {
     label: string;
-    type: InputType;
+    type: "text" | "password";
+    formProps: UseControllerProps<T>;
 };
 
-export function FormField({ label, type }: InputProps) {
+export function FormField<TFields extends FieldValues>({
+    label,
+    type,
+    formProps,
+}: InputProps<TFields>) {
     const [visible, setVisible] = useState(false);
 
     const handleToggleVisibility = useCallback(() => {
         setVisible(!visible);
     }, [visible]);
 
-    <View>
-        <Text>{label}</Text>
-        <View>
-            <TextInput secureTextEntry={type === InputType.PASSWORD} />
-            <Pressable onPress={handleToggleVisibility}>
-                { type === InputType.PASSWORD && <Feather name={visible ? 'eye-off' : 'eye'} />}
-            </Pressable>
-        </View>
-    </View>;
+    return (
+        <Controller
+            control={formProps.control}
+            render={({ field: { onChange, onBlur, value } }) => (
+                <View className="gap-2">
+                    <Text>{label}</Text>
+                    <View className="border border-gray-300 rounded-lg flex-row gap-2 items-center relative px-2">
+                        <TextInput secureTextEntry={type === "password"} />
+                        <Pressable
+                            onPress={handleToggleVisibility}
+                            className="absolute right-4"
+                        >
+                            {type === "password" && (
+                                <Feather
+                                    name={visible ? "eye-off" : "eye"}
+                                    color="#d1d5db"
+                                    size={18}
+                                />
+                            )}
+                        </Pressable>
+                    </View>
+                </View>
+            )}
+            name={formProps.name}
+            rules={formProps.rules}
+        />
+    );
 }
