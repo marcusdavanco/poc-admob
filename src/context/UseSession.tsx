@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { Session } from "../services/AuthService/types";
+import { STORAGE_KEY } from "../constants/index";
 
 interface SessionState {
     isAuthenticated: boolean;
@@ -74,11 +75,7 @@ export const SessionProvider = ({
 
         try {
             const sessionStr = await AsyncStorage.getItem(STORAGE_KEY);
-
-            if (!sessionStr) {
-                throw new Error("No session found");
-            }
-
+            
             const parsedSession = JSON.parse(sessionStr) as Session;
 
             setState((prev) => ({

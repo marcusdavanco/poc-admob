@@ -1,11 +1,10 @@
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { FormField } from "@/components/form/form-field";
-import { Controller } from "react-hook-form";
 import { View } from "react-native";
 import { useAuth } from "../hooks/useAuth";
 
-export function SignInForm() {
+export function SignUpForm() {
     const { control } = useAuth();
 
     return (

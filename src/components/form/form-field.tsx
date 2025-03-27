@@ -31,7 +31,13 @@ export function FormField<TFields extends FieldValues>({
                 <View className="gap-2">
                     <Text>{label}</Text>
                     <View className="border border-gray-300 rounded-lg flex-row gap-2 items-center relative px-2">
-                        <TextInput secureTextEntry={type === "password"} />
+                        <TextInput 
+                            secureTextEntry={type === "password" && !visible} 
+                            value={value}
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            className="w-full"
+                        />
                         <Pressable
                             onPress={handleToggleVisibility}
                             className="absolute right-4"

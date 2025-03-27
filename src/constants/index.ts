@@ -1,1 +1,1 @@
-const STORAGE_KEY = "@poc_admob/session";
+export const STORAGE_KEY = "@poc_admob/session";

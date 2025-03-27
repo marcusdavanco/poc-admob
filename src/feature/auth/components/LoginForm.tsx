@@ -1,14 +1,15 @@
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { FormField } from "@/components/form/form-field";
-import { View } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useAuth } from "../hooks/useAuth";
+import { Link } from "expo-router";
 
 export function LoginForm() {
     const { control } = useAuth();
 
     return (
-        <Card>
+        <Card>            
             <View className="gap-2">
                 <FormField
                     label="Email"
@@ -29,7 +30,7 @@ export function LoginForm() {
                     }}
                 />
             </View>
-            <Button title="Login" />
+            <Button title="Login" />                
         </Card>
     );
 }
