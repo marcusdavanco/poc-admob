@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { useAuth } from "../hooks/useAuth";
 
 export function SignUpForm() {
-    const { control } = useAuth();
+    const { controlSignUp, handleSubmitSignUp, onSubmitSignUp } = useAuth();
 
     return (
         <Card>
@@ -14,7 +14,7 @@ export function SignUpForm() {
                     label="Email"
                     type="text"
                     formProps={{
-                        control,
+                        control: controlSignUp,
                         name: "email",
                         rules: { required: "Campo obrigatório" },
                     }}
@@ -23,7 +23,7 @@ export function SignUpForm() {
                     label="Senha"
                     type="password"
                     formProps={{
-                        control,
+                        control: controlSignUp,
                         name: "password",
                         rules: { required: "Campo obrigatório" },
                     }}
@@ -32,13 +32,13 @@ export function SignUpForm() {
                     label="Confirme a Senha"
                     type="password"
                     formProps={{
-                        control,
+                        control: controlSignUp,
                         name: "password-confirmation",
                         rules: { required: "Campo obrigatório" },
                     }}
                 />
             </View>
-            <Button title="Cadastrar" />
+            <Button title="Cadastrar" onPressFn={handleSubmitSignUp(onSubmitSignUp)} />
         </Card>
     );
 }
