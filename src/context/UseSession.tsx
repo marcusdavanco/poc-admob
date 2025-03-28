@@ -5,7 +5,7 @@ import { STORAGE_KEY } from "../constants/index";
 
 interface SessionState {
     isAuthenticated: boolean;
-    loading: boolean;
+    isLoading: boolean;
     session?: Session;
 }
 
@@ -18,9 +18,10 @@ interface SessionContextProps {
     clearSession: () => Promise<void>;
 }
 
-const storeSession = async (session: Session): Promise<void> => {
+const storeSession = async (session: Session): Promise<void> => {    
     try {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(session));        
+        console.log('storeSession', session);
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message);
@@ -31,7 +32,7 @@ const storeSession = async (session: Session): Promise<void> => {
 
 const initialState: SessionState = {
     isAuthenticated: false,
-    loading: false,
+    isLoading: false,
 };
 
 const SessionContext = createContext<SessionContextProps>({
@@ -53,12 +54,20 @@ export const SessionProvider = ({
     }, []);
 
     const setLoading = useCallback((loading: boolean): void => {
-        setState((prev) => ({ ...prev, loading }));
+        setState((prev) => ({ ...prev, isLoading: loading }));
     }, []);
 
     const authenticate = async (session: Session): Promise<void> => {
-        setAuthenticated(true);
+        console.log('Not authenticated', state.isAuthenticated);
+        
+        console.log('is authenticated', state.isAuthenticated);
         await storeSession(session);
+        
+        setState((prev) => ({
+            ...prev,
+            isAuthenticated: true,
+            session,
+        }));
     };
 
     const clearSession = useCallback(async (): Promise<void> => {
@@ -71,30 +80,30 @@ export const SessionProvider = ({
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: adding setLoading causes an infinite loop
     const getSession = useCallback(async (): Promise<Session | undefined> => {
-        setLoading(true);
-
+        setLoading(true); // Start loading
+    
         try {
             const sessionStr = await AsyncStorage.getItem(STORAGE_KEY);
-            
             const parsedSession = JSON.parse(sessionStr) as Session;
-
+    
             setState((prev) => ({
                 ...prev,
                 isAuthenticated: true,
                 session: parsedSession,
             }));
+    
+            return parsedSession; // Return the parsed session directly
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.message);
             }
-
+    
             await clearSession();
+            return undefined; // Return undefined if an error occurs
         } finally {
-            setLoading(false);
+            setLoading(false); // Stop loading
         }
-        const session = state.session;
-        return session;
-    }, [clearSession, state.session]);
+    }, [clearSession]); 
 
     useEffect(() => {
         getSession()

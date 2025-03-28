@@ -30,7 +30,7 @@ export function FormField<TFields extends FieldValues>({
             render={({ field: { onChange, onBlur, value } }) => (
                 <View className="gap-2">
                     <Text>{label}</Text>
-                    <View className="border border-gray-300 rounded-lg flex-row gap-2 items-center relative px-2">
+                    <View className="border border-gray-300 rounded-lg flex-row gap-2 items-center relative px-2 py-3">
                         <TextInput 
                             secureTextEntry={type === "password" && !visible} 
                             value={value}
